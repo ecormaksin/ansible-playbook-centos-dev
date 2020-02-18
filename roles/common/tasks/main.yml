@@ -1,0 +1,16 @@
+- name: "共通 | パッケージの最新化"
+  become: true
+  yum:
+    name: '*'
+    state: latest
+
+- name: "共通 | EPELを追加"
+  become: true
+  yum:
+    name: epel-release
+    state: present
+
+- name: "共通 | OSファミリーをデバッグ"
+  become: true
+  debug:
+    msg: "{{ ansible_facts['distribution_major_version'] }}"
