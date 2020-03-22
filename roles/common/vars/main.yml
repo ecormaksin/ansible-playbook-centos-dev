@@ -1,0 +1,19 @@
+yum:
+  repo:
+    base:
+      file:
+        path: /etc/yum.repos.d/CentOS-Base.repo
+      priority: 1
+    epel:
+      file:
+        path: /etc/yum.repos.d/epel.repo
+      priority: 5
+    sclo:
+      file:
+        path:
+          common_part: /etc/yum.repos.d/CentOS-SCLo-scl
+      priority: 10
+    remi:
+      file:
+        path: /etc/yum.repos.d/remi-safe.repo
+      priority: 10
