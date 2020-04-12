@@ -4,6 +4,39 @@
     name: '*'
     state: latest
 
+- name: "共通 | 不要なサービスを停止する"
+  become: true
+  ignore_errors: yes
+  systemd:
+    enabled: no
+    state: stopped
+    name: "{{ item }}"
+  with_items:
+    - ModemManager
+    - abrt-ccpp
+    - abrt-oops
+    - abrt-vmcore
+    - abrt-xorg
+    - bluetooth
+    - dmraid-activation
+    - hypervfcopyd
+    - hypervkvpd
+    - hypervvssd
+    - iscsi
+    - ksm
+    - ksmtuned
+    - libstoragemgmt
+    - libvirtd
+    - mdmonitor
+    - microcode
+    - multipathd
+    - postfix
+    - qemu-guest-agent
+    - rhsmcertd
+    - rngd
+    - rtkit-daemon
+    - spice-vdagentd
+
 - name: "共通 | 標準リポジトリ提供のものを優先するプラグインをインストールする"
   become: true
   yum:
@@ -15,7 +48,9 @@
   shell:
     cmd: |
       cat "{{ yum.repo.base.file.path }}" | grep "priority={{ yum.repo.base.priority }}" >/dev/null
-      if [ $? -ne 0 ]; then
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
         sed -i -e "s/\]$/\]\npriority={{ yum.repo.base.priority }}/g" "{{ yum.repo.base.file.path }}"
       fi
 
@@ -30,7 +65,9 @@
   shell:
     cmd: |
       cat "{{ yum.repo.epel.file.path }}" | grep "priority={{ yum.repo.epel.priority }}" >/dev/null
-      if [ $? -ne 0 ]; then
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
         sed -i -e "s/\]$/\]\npriority={{ yum.repo.epel.priority }}/g" "{{ yum.repo.epel.file.path }}"
       fi
 
@@ -47,7 +84,9 @@
   shell:
     cmd: |
       cat "{{ yum.repo.sclo.file.path.common_part }}{{ item }}.repo" | grep "priority={{ yum.repo.sclo.priority }}" >/dev/null
-      if [ $? -ne 0 ]; then
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
         sed -i -e "s/\]$/\]\npriority={{ yum.repo.sclo.priority }}/g" "{{ yum.repo.sclo.file.path.common_part }}{{ item }}.repo"
       fi
   with_items:
@@ -65,6 +104,8 @@
   shell:
     cmd: |
       cat "{{ yum.repo.remi.file.path }}" | grep "priority={{ yum.repo.remi.priority }}" >/dev/null
-      if [ $? -ne 0 ]; then
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
         sed -i -e "s/\]$/\]\npriority={{ yum.repo.remi.priority }}/g" "{{ yum.repo.remi.file.path }}"
       fi
