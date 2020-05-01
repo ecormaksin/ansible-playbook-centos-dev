@@ -1,0 +1,29 @@
+- name: "共通 | vimをインストールする"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: vim-enhanced
+    state: present
+
+- name: "共通 | viでvimを呼び出せるようにする"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ etc.profile.file.path }}" | grep "alias vi='vim'" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        echo -e "\nalias vi='vim'" >> "{{ etc.profile.file.path }}"
+        source "{{ etc.profile.file.path }}"
+      fi
+
+- name: "共通 | vimrcをカスタマイズする"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  copy:
+    src: vimrc
+    dest: "{{ vim.rc.file.path }}"
+    owner: root
+    group: root
+    mode: '0644'

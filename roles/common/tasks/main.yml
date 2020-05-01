@@ -1,3 +1,4 @@
 - include: sub/set_service.yml
 - include: sub/update_system.yml
 - include: sub/add_repository.yml
+- include: sub/install_vim.yml

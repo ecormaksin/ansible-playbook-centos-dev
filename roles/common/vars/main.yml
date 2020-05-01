@@ -18,3 +18,13 @@ yum:
       file:
         path: /etc/yum.repos.d/remi-safe.repo
       priority: 10
+
+etc:
+  profile:
+    file:
+      path: /etc/profile
+
+vim:
+  rc:
+    file:
+      path: /etc/vimrc
