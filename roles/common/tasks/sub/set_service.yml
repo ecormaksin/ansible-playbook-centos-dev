@@ -1,0 +1,32 @@
+- name: "共通 | 不要なサービスを停止する"
+  become: true
+  ignore_errors: yes
+  systemd:
+    enabled: no
+    state: stopped
+    name: "{{ item }}"
+  with_items:
+    - ModemManager
+    - abrt-ccpp
+    - abrt-oops
+    - abrt-vmcore
+    - abrt-xorg
+    - bluetooth
+    - dmraid-activation
+    - hypervfcopyd
+    - hypervkvpd
+    - hypervvssd
+    - iscsi
+    - ksm
+    - ksmtuned
+    - libstoragemgmt
+    - libvirtd
+    - mdmonitor
+    - microcode
+    - multipathd
+    - postfix
+    - qemu-guest-agent
+    - rhsmcertd
+    - rngd
+    - rtkit-daemon
+    - spice-vdagentd

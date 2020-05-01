@@ -6,14 +6,14 @@
 
 ```
 # playbookのシンタックスチェック
-ansible-playbook -i hosts.yml site.yml -vv --syntax-check
+ansible-playbook -i ./inventory/*.yml site.yml -vv --syntax-check
 
 # ドライラン
-ansible-playbook -i hosts.yml site.yml -vv --check
+ansible-playbook -i ./inventory/*.yml site.yml -vv --check
 
 # 実際に実行
-ansible-playbook -i hosts.yml site.yml -vv
+ansible-playbook -i ./inventory/*.yml site.yml -vv
 
 # 途中から実行
-ansible-playbook -i hosts.yml site.yml -vv --start-at="<途中から開始したいタスク名>"
+ansible-playbook -i ./inventory/*.yml site.yml -vv --start-at="<途中から開始したいタスク名>"
 ```

@@ -1,0 +1,87 @@
+- name: "共通 | 標準リポジトリ提供のものを優先するプラグインをインストールする"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: yum-plugin-priorities
+    state: present
+
+- name: "共通 | 標準リポジトリを最優先にする (プライオリティ=1)"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ yum.repo.base.file.path }}" | grep "priority={{ yum.repo.base.priority }}" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        sed -i -e "s/\]$/\]\npriority={{ yum.repo.base.priority }}/g" "{{ yum.repo.base.file.path }}"
+      fi
+
+- name: "共通 | EPELを追加する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: epel-release
+    state: present
+
+- name: "共通 | EPELの優先順位を設定する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ yum.repo.epel.file.path }}" | grep "priority={{ yum.repo.epel.priority }}" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        sed -i -e "s/\]$/\]\npriority={{ yum.repo.epel.priority }}/g" "{{ yum.repo.epel.file.path }}"
+      fi
+
+- name: "共通 | CentOS SCLo Software collectionsを追加する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name:
+      - centos-release-scl-rh
+      - centos-release-scl
+    state: present
+
+- name: "共通 | CentOS SCLo Software collectionsの優先順位を設定する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ yum.repo.sclo.file.path.common_part }}{{ item }}.repo" | grep "priority={{ yum.repo.sclo.priority }}" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        sed -i -e "s/\]$/\]\npriority={{ yum.repo.sclo.priority }}/g" "{{ yum.repo.sclo.file.path.common_part }}{{ item }}.repo"
+      fi
+  with_items:
+    - ""
+    - "-rh"
+
+- name: "共通 | RPMリポジトリをURLからインストールするためwgetをインストールする"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: wget
+    state: present
+
+- name: "共通 | Remi's RPM repositoryを追加する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: "{{ yum.repo.remi.url }}"
+    state: present
+
+- name: "共通 | Remi's RPM repositoryの優先順位を設定する"
+  become: true
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      cat "{{ yum.repo.remi.file.path }}" | grep "priority={{ yum.repo.remi.priority }}" >/dev/null
+      if [ $? -eq 0 ]; then
+        echo "already changed."
+      else
+        sed -i -e "s/\]$/\]\npriority={{ yum.repo.remi.priority }}/g" "{{ yum.repo.remi.file.path }}"
+      fi
