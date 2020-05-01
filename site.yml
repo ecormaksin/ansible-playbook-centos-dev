@@ -1,3 +1,8 @@
 - hosts: all
   roles:
     - common
+
+- hosts: develop
+  roles:
+    - mate-desktop
+    - xrdp

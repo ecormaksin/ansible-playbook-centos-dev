@@ -1,5 +1,5 @@
 - name: "共通 | 不要なサービスを停止する"
-  become: true
+  become: yes
   ignore_errors: yes
   systemd:
     enabled: no

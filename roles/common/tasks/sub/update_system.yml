@@ -1,5 +1,5 @@
 - name: "共通 | パッケージを最新化する"
-  become: true
+  become: yes
   yum:
     name: '*'
     state: latest

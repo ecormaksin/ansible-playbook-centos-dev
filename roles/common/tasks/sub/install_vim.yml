@@ -1,12 +1,12 @@
 - name: "共通 | vimをインストールする"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name: vim-enhanced
     state: present
 
 - name: "共通 | viでvimを呼び出せるようにする"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   shell:
     cmd: |
@@ -19,7 +19,7 @@
       fi
 
 - name: "共通 | vimrcをカスタマイズする"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   copy:
     src: vimrc

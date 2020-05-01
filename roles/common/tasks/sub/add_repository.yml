@@ -1,12 +1,12 @@
 - name: "共通 | 標準リポジトリ提供のものを優先するプラグインをインストールする"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name: yum-plugin-priorities
     state: present
 
 - name: "共通 | 標準リポジトリを最優先にする (プライオリティ=1)"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   shell:
     cmd: |
@@ -18,14 +18,14 @@
       fi
 
 - name: "共通 | EPELを追加する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name: epel-release
     state: present
 
 - name: "共通 | EPELの優先順位を設定する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   shell:
     cmd: |
@@ -37,7 +37,7 @@
       fi
 
 - name: "共通 | CentOS SCLo Software collectionsを追加する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name:
@@ -46,7 +46,7 @@
     state: present
 
 - name: "共通 | CentOS SCLo Software collectionsの優先順位を設定する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   shell:
     cmd: |
@@ -61,21 +61,21 @@
     - "-rh"
 
 - name: "共通 | RPMリポジトリをURLからインストールするためwgetをインストールする"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name: wget
     state: present
 
 - name: "共通 | Remi's RPM repositoryを追加する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   yum:
     name: "{{ yum.repo.remi.url }}"
     state: present
 
 - name: "共通 | Remi's RPM repositoryの優先順位を設定する"
-  become: true
+  become: yes
   ignore_errors: "{{ ansible_check_mode }}"
   shell:
     cmd: |

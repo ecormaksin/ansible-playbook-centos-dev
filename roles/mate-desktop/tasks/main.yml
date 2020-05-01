@@ -1,0 +1,9 @@
+- name: "MATEデスクトップ | インストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name:
+      - "@X Window system" 
+      - "@^MATE Desktop"
+    enablerepo: "epel"
+    state: present

@@ -1,0 +1,37 @@
+- name: "Xrdp | Xrdpサーバーをインストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: xrdp
+    enablerepo: "epel"
+    state: present
+
+- name: "Xrdp | Xrdpサーバーを起動する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  systemd:
+    name: xrdp
+    enabled: yes
+    state: started
+
+- name: "Xrdp | ファイアウォールでXrdpのポートを許可する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  firewalld:
+    port: 3389/tcp
+    permanent: yes
+    state: enabled
+
+- name: "Xrdp | ファイアウォールを再起動して設定を反映する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  systemd:
+    name: firewalld
+    state: restarted
+
+- name: "Xrdp | Xclientsを作成する"
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      echo "mate-session" > ~/.Xclients
+      chmod a+x ~/.Xclients
