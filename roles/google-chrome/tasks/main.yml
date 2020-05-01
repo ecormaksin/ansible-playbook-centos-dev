@@ -1,0 +1,20 @@
+- name: "Google Chrome | リポジトリファイルを配置する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  copy:
+    src: google-chrome.repo 
+    dest: /etc/yum.repos.d/
+
+- name: "Google Chrome | 署名キーファイルを配置する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  rpm_key:
+    key: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    state: present 
+
+- name: "Google Chrome | インストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: google-chrome-stable 
+    state: present
