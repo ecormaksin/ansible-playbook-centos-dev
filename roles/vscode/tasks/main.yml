@@ -1,0 +1,21 @@
+- name: "Visual Studio Code | rpmのキーをインポートする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: "Visual Studio Code | リポジトリファイルを作成する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  shell:
+    cmd: |
+      sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+- name: "Visual Studio Code | インストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: code
+    update_cache: yes
+    state: latest
