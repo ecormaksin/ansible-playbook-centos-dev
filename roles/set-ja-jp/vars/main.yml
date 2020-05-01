@@ -1,0 +1,4 @@
+ibus:
+  auto_start:
+    file:
+      path: /etc/ibus_auto_start
