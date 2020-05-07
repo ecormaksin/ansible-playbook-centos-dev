@@ -2,3 +2,4 @@
 - include: sub/update_system.yml
 - include: sub/add_repository.yml
 - include: sub/install_vim.yml
+- include: sub/install_tmux.yml

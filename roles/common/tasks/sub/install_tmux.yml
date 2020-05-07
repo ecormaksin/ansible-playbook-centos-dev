@@ -1,0 +1,6 @@
+- name: "共通 | tmuxをインストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: tmux
+    state: present
