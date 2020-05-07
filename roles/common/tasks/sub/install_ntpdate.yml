@@ -1,0 +1,14 @@
+- name: "共通 | ntpdateをインストールする"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  yum:
+    name: ntpdate
+    state: present
+
+- name: "共通 | ntpdateを起動する"
+  become: yes
+  ignore_errors: "{{ ansible_check_mode }}"
+  systemd:
+    name: ntpdate
+    enabled: yes
+    state: started
